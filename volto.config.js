@@ -1,4 +1,4 @@
-const addons = ['volto-comparison-slider'];
+const addons = ['@interaktivgmbh/volto-comparison-slider'];
 const theme = '';
 
 module.exports = {

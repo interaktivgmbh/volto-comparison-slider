@@ -1,0 +1,63 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: volto-comparison-slider\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: de\n"
+"Language-Team: German\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Comparison Slider"
+msgstr "Vergleichs-Slider"
+
+msgid "Before Image"
+msgstr "Vorher-Bild"
+
+msgid "After Image"
+msgstr "Nachher-Bild"
+
+msgid "Before Label"
+msgstr "Vorher-Beschriftung"
+
+msgid "After Label"
+msgstr "Nachher-Beschriftung"
+
+msgid "Initial Position"
+msgstr "Anfangsposition"
+
+msgid "Initial slider position (0-100)"
+msgstr "Anfangsposition des Sliders (0-100)"
+
+msgid "Show Labels"
+msgstr "Beschriftungen anzeigen"
+
+msgid "Slider Orientation"
+msgstr "Slider-Ausrichtung"
+
+msgid "Horizontal"
+msgstr "Horizontal"
+
+msgid "Vertical"
+msgstr "Vertikal"
+
+msgid "Select before and after images in the sidebar"
+msgstr "Wähle Vorher- und Nachher-Bilder in der Seitenleiste aus"
+
+msgid "Handle Type"
+msgstr "Griff-Typ"
+
+msgid "Icon"
+msgstr "Icon"
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Handle Text"
+msgstr "Griff-Text"
+
+msgid "Text displayed on the slider handle (e.g. DRAG)"
+msgstr "Text auf dem Slider-Griff (z.B. ZIEHEN)"

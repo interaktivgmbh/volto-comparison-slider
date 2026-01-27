@@ -1,0 +1,63 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: volto-comparison-slider\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: en\n"
+"Language-Team: English\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Comparison Slider"
+msgstr ""
+
+msgid "Before Image"
+msgstr ""
+
+msgid "After Image"
+msgstr ""
+
+msgid "Before Label"
+msgstr ""
+
+msgid "After Label"
+msgstr ""
+
+msgid "Initial Position"
+msgstr ""
+
+msgid "Initial slider position (0-100)"
+msgstr ""
+
+msgid "Show Labels"
+msgstr ""
+
+msgid "Slider Orientation"
+msgstr ""
+
+msgid "Horizontal"
+msgstr ""
+
+msgid "Vertical"
+msgstr ""
+
+msgid "Select before and after images in the sidebar"
+msgstr ""
+
+msgid "Handle Type"
+msgstr ""
+
+msgid "Icon"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Handle Text"
+msgstr ""
+
+msgid "Text displayed on the slider handle (e.g. DRAG)"
+msgstr ""
