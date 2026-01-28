@@ -1,15 +1,20 @@
-# volto-comparison-slider (volto-comparison-slider)
+# volto-comparison-slider
 
-A new add-on for Volto
+A Volto add-on that provides an image comparison slider block for before/after image comparisons.
 
-[![npm](https://img.shields.io/npm/v/volto-comparison-slider)](https://www.npmjs.com/package/volto-comparison-slider)
-[![](https://img.shields.io/badge/-Storybook-ff4785?logo=Storybook&logoColor=white&style=flat-square)](https://interaktivgmbh.github.io/volto-comparison-slider/)
 [![Code analysis checks](https://github.com/interaktivgmbh/volto-comparison-slider/actions/workflows/code.yml/badge.svg)](https://github.com/interaktivgmbh/volto-comparison-slider/actions/workflows/code.yml)
 [![Unit tests](https://github.com/interaktivgmbh/volto-comparison-slider/actions/workflows/unit.yml/badge.svg)](https://github.com/interaktivgmbh/volto-comparison-slider/actions/workflows/unit.yml)
 
 ## Features
 
-<!-- List your awesome features here -->
+- Interactive before/after image comparison slider
+- Horizontal and vertical orientation support
+- Customizable handle (icon or text)
+- Configurable initial slider position
+- Optional labels for before/after images
+- Full keyboard accessibility (arrow keys, Home/End)
+- Touch and mouse support
+- Responsive design
 
 ## Installation
 
@@ -18,24 +23,18 @@ To install your project, you must choose the method appropriate to your version 
 
 ### Volto 18 and later
 
-Add `volto-comparison-slider` to your `package.json`:
+Add `@interaktivgmbh/volto-comparison-slider` to your `package.json`:
 
 ```json
 "dependencies": {
-    "volto-comparison-slider": "*"
+    "@interaktivgmbh/volto-comparison-slider": "*"
 }
 ```
 
-Add `volto-comparison-slider` to your `volto.config.js`:
+Add `@interaktivgmbh/volto-comparison-slider` to your `volto.config.js`:
 
 ```javascript
-const addons = ['volto-comparison-slider'];
-```
-
-If this package provides a Volto theme, and you want to activate it, then add the following to your `volto.config.js`:
-
-```javascript
-const theme = 'volto-comparison-slider';
+const addons = ['@interaktivgmbh/volto-comparison-slider'];
 ```
 
 ### Volto 17 and earlier
@@ -44,19 +43,19 @@ Create a new Volto project (you can skip this step if you already have one):
 
 ```
 npm install -g yo @plone/generator-volto
-yo @plone/volto my-volto-project --addon volto-comparison-slider
+yo @plone/volto my-volto-project --addon @interaktivgmbh/volto-comparison-slider
 cd my-volto-project
 ```
 
-Add `volto-comparison-slider` to your package.json:
+Add `@interaktivgmbh/volto-comparison-slider` to your package.json:
 
 ```JSON
 "addons": [
-    "volto-comparison-slider"
+    "@interaktivgmbh/volto-comparison-slider"
 ],
 
 "dependencies": {
-    "volto-comparison-slider": "*"
+    "@interaktivgmbh/volto-comparison-slider": "*"
 }
 ```
 
@@ -71,6 +70,31 @@ Start volto with:
 ```
 yarn start
 ```
+
+## Usage
+
+After installation, a new block type "Comparison Slider" will be available in the Volto block chooser.
+
+### Block Settings
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Before Image | The image shown on the left/top side | - |
+| After Image | The image shown on the right/bottom side | - |
+| Before Label | Label text for the before image | "Before" |
+| After Label | Label text for the after image | "After" |
+| Show Labels | Toggle visibility of labels | true |
+| Initial Position | Starting position of the slider (0-100%) | 50 |
+| Orientation | Horizontal or vertical slider | Horizontal |
+| Handle Type | Icon or text handle | Icon |
+| Handle Text | Custom text for text handle | "DRAG" |
+
+### Keyboard Navigation
+
+- **Arrow Left/Right** (horizontal) or **Arrow Up/Down** (vertical): Move slider by 1%
+- **Shift + Arrow**: Move slider by 10%
+- **Home**: Move slider to 0%
+- **End**: Move slider to 100%
 
 ## Test installation
 
