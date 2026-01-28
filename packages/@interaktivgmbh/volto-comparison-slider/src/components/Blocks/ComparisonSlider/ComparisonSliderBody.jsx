@@ -1,5 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { flattenToAppURL } from '@plone/volto/helpers';
+import Image from '@plone/volto/components/theme/Image/Image';
+
+const getImageUrl = (image) =>
+  image?.[0] ? flattenToAppURL(`${image[0]['@id']}/@@images/image`) : null;
 
 const ComparisonSliderBody = ({ data, isEditMode = false }) => {
   const {
@@ -14,85 +18,82 @@ const ComparisonSliderBody = ({ data, isEditMode = false }) => {
     handleText = 'DRAG',
   } = data;
 
+  const isHorizontal = orientation === 'horizontal';
   const [sliderPosition, setSliderPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
 
-  const beforeUrl = beforeImage?.[0]
-    ? flattenToAppURL(`${beforeImage[0]['@id']}/@@images/image`)
-    : null;
-  const afterUrl = afterImage?.[0]
-    ? flattenToAppURL(`${afterImage[0]['@id']}/@@images/image`)
-    : null;
+  const beforeUrl = getImageUrl(beforeImage);
+  const afterUrl = getImageUrl(afterImage);
 
-  const handleMove = useCallback(
+  const updatePosition = useCallback(
     (clientX, clientY) => {
       if (!containerRef.current) return;
-
       const rect = containerRef.current.getBoundingClientRect();
-      let position;
-
-      if (orientation === 'horizontal') {
-        position = ((clientX - rect.left) / rect.width) * 100;
-      } else {
-        position = ((clientY - rect.top) / rect.height) * 100;
-      }
-
+      const position = isHorizontal
+        ? ((clientX - rect.left) / rect.width) * 100
+        : ((clientY - rect.top) / rect.height) * 100;
       setSliderPosition(Math.max(0, Math.min(100, position)));
     },
-    [orientation],
+    [isHorizontal],
   );
 
-  const handleMouseDown = useCallback(
+  const handleStart = useCallback(
     (e) => {
       if (isEditMode) return;
       e.preventDefault();
       setIsDragging(true);
-      handleMove(e.clientX, e.clientY);
+      const point = e.touches?.[0] || e;
+      updatePosition(point.clientX, point.clientY);
     },
-    [isEditMode, handleMove],
+    [isEditMode, updatePosition],
   );
 
-  const handleTouchStart = useCallback(
+  const handleKeyDown = useCallback(
     (e) => {
       if (isEditMode) return;
-      setIsDragging(true);
-      const touch = e.touches[0];
-      handleMove(touch.clientX, touch.clientY);
+      const step = e.shiftKey ? 10 : 1;
+      const decreaseKeys = isHorizontal ? ['ArrowLeft'] : ['ArrowUp'];
+      const increaseKeys = isHorizontal ? ['ArrowRight'] : ['ArrowDown'];
+
+      if (decreaseKeys.includes(e.key)) {
+        e.preventDefault();
+        setSliderPosition((prev) => Math.max(0, prev - step));
+      } else if (increaseKeys.includes(e.key)) {
+        e.preventDefault();
+        setSliderPosition((prev) => Math.min(100, prev + step));
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        setSliderPosition(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        setSliderPosition(100);
+      }
     },
-    [isEditMode, handleMove],
+    [isEditMode, isHorizontal],
   );
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!isDragging) return;
-      handleMove(e.clientX, e.clientY);
-    };
+    if (!isDragging) return;
 
-    const handleTouchMove = (e) => {
-      if (!isDragging) return;
-      const touch = e.touches[0];
-      handleMove(touch.clientX, touch.clientY);
+    const handleMove = (e) => {
+      const point = e.touches?.[0] || e;
+      updatePosition(point.clientX, point.clientY);
     };
+    const handleEnd = () => setIsDragging(false);
 
-    const handleEnd = () => {
-      setIsDragging(false);
-    };
-
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleEnd);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleEnd);
-    }
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchmove', handleMove);
+    document.addEventListener('touchend', handleEnd);
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousemove', handleMove);
       document.removeEventListener('mouseup', handleEnd);
-      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchmove', handleMove);
       document.removeEventListener('touchend', handleEnd);
     };
-  }, [isDragging, handleMove]);
+  }, [isDragging, updatePosition]);
 
   useEffect(() => {
     setSliderPosition(initialPosition);
@@ -101,8 +102,6 @@ const ComparisonSliderBody = ({ data, isEditMode = false }) => {
   if (!beforeUrl || !afterUrl) {
     return null;
   }
-
-  const isHorizontal = orientation === 'horizontal';
 
   const clipPath = isHorizontal
     ? `inset(0 ${100 - sliderPosition}% 0 0)`
@@ -116,17 +115,24 @@ const ComparisonSliderBody = ({ data, isEditMode = false }) => {
     <div
       ref={containerRef}
       className={`comparison-slider comparison-slider--${orientation} ${isDragging ? 'is-dragging' : ''}`}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
+      role="slider"
+      tabIndex={isEditMode ? -1 : 0}
+      aria-valuenow={Math.round(sliderPosition)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={`Image comparison slider: ${beforeLabel} vs ${afterLabel}`}
+      onMouseDown={handleStart}
+      onTouchStart={handleStart}
+      onKeyDown={handleKeyDown}
     >
       <div className="comparison-slider__image-container">
-        <img
+        <Image
           src={afterUrl}
           alt={afterLabel}
           className="comparison-slider__image comparison-slider__image--after"
           draggable={false}
         />
-        <img
+        <Image
           src={beforeUrl}
           alt={beforeLabel}
           className="comparison-slider__image comparison-slider__image--before"
@@ -145,13 +151,15 @@ const ComparisonSliderBody = ({ data, isEditMode = false }) => {
         >
           {handleType === 'text' ? (
             <span className="comparison-slider__handle-text">{handleText}</span>
-          ) : isHorizontal ? (
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l-7-7 7-7zm8 0v14l7-7-7-7z" />
-            </svg>
           ) : (
             <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M5 8h14l-7-7-7 7zm0 8h14l-7 7-7-7z" />
+              <path
+                d={
+                  isHorizontal
+                    ? 'M8 5v14l-7-7 7-7zm8 0v14l7-7-7-7z'
+                    : 'M5 8h14l-7-7-7 7zm0 8h14l-7 7-7-7z'
+                }
+              />
             </svg>
           )}
         </div>
